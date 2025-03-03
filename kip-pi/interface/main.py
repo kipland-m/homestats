@@ -6,6 +6,7 @@ pygame.init()
 
 WIDTH, HEIGHT = 640, 480
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
+font1 = pygame.font.Font(None, 72)
 pygame.display.set_caption("lets monitor shit")
 
 running = True
@@ -14,7 +15,9 @@ while running:
         if event.type == pygame.QUIT:
             running = False
 
-    screen.fill((0, 0, 0))
+    text = font1.render("Test text", True, (155,155,155))
+    screen.blit(text, (50, 50))
+
 
     pygame.display.flip()
 
