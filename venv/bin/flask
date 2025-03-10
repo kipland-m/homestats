@@ -1,4 +1,4 @@
-#!/home/kip/dev/pi-flask_server/venv/bin/python3
+#!/home/kip/Dev/pi-flask_server/venv/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
