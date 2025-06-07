@@ -1,6 +1,8 @@
 from flask import Flask, request
+from flask_socketio import SocketIO, emit 
 
 app = Flask(__name__)
+socketio = SocketIO(app)
 
 @app.route('/receive_hardware_data', methods=['POST'])
 def receive_hardware_data():
