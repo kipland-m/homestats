@@ -13,20 +13,6 @@ dotenv.load_dotenv()
 connected_clients = set()
 host = os.getenv("host")
 
-async def handle_client(websocket, path):
-    connected_clients.add(websocket)
-    try:
-        async for message in websocket:
-            for client in connected_clients:
-                if client != websocket:
-                    await client.send(message)
-
-    except websockets.exceptions.ConnectionClosed:
-        pass
-
-    finally:
-        connected_clients.remove(websocket)
-
 def main():
     while True:
         try:
