@@ -2,6 +2,7 @@ import requests
 import psutil
 import time
 import os
+import time
 import dotenv 
 import netifaces
 
@@ -13,7 +14,8 @@ while True:
     try:
         print(f"host ip: {host}")
 
-        print(netifaces.interfaces(),netifaces.ifaddresses('lo0'))
+        print(netifaces.interfaces())
+        print(netifaces.interfaces(),netifaces.ifaddresses('lo'))
 
         hardware_data = {
             'cpu_usage': psutil.cpu_percent(),
