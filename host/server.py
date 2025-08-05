@@ -1,6 +1,7 @@
 # Kipland Melton 2025
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import PlainTextResponse
 import uvicorn
 
 app = FastAPI()
@@ -13,6 +14,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+"""
 async def handle_client(websocket, path):
     connected_clients.add(websocket)
     try:
@@ -27,15 +29,13 @@ async def handle_client(websocket, path):
     finally:
         connected_clients.remove(websocket)
 
-#    server = await websockets.serve(handle_client, 'localhost', 12345)
-#    await server.wait_closed()
+    server = await websockets.serve(handle_client, 'localhost', 12345)
+    await server.wait_closed()
+"""
 
-@app.route('/get-stats', methods=['GET'])
-def receive_hardware_data(request):
-    data = request.json
-
-    print("Received hardware data:", data)
-    return 'Data received successfully'
+@app.get("/get-stats")
+async def receive_hardware_data(request: Request):
+    return {'data': 'successfully reached backend'}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
