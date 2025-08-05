@@ -1,9 +1,17 @@
 # Kipland Melton 2025
-from flask import Flask, request
-from flask_socketio import SocketIO, emit 
+from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
+import uvicorn
 
-app = Flask(__name__)
-socketio = SocketIO(app)
+app = FastAPI()
+
+# Allow requests from browser
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 async def handle_client(websocket, path):
     connected_clients.add(websocket)
@@ -22,12 +30,12 @@ async def handle_client(websocket, path):
 #    server = await websockets.serve(handle_client, 'localhost', 12345)
 #    await server.wait_closed()
 
-@app.route('/receive_hardware_data', methods=['POST'])
-def receive_hardware_data():
+@app.route('/get-stats', methods=['GET'])
+def receive_hardware_data(request):
     data = request.json
 
     print("Received hardware data:", data)
     return 'Data received successfully'
 
-if __name__ == '__main__':
-    app.run(host='0.0.0.0', port=5000)
+if __name__ == "__main__":
+    uvicorn.run(app, host="0.0.0.0", port=8000)
