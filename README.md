@@ -2,7 +2,8 @@
 
 Running the project:
     host/frontend - python3 -m http.server 8001
-    host/server.py
+    host/ - uvicorn main:app --reload
+    agent/ - python agent.py (for now, will become system tray level)
 
 Components of the product
 - Backend
