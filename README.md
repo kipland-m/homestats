@@ -15,6 +15,8 @@ Components of the product
  Agent functionality
 - Undecided on the language but maybe python.
 - Lightweight, easily deployable agent that will be distributed to devices across your network.
+- 
+
 
 Working on implementing sockets for communication between server and interface-
 
