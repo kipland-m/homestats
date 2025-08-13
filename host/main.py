@@ -6,10 +6,9 @@ import uvicorn
 
 app = FastAPI()
 
-# Allow requests from browser
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
+    allow_origins=["http://localhost:8001"],  # frontend origin
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -34,8 +33,15 @@ async def handle_client(websocket, path):
 """
 
 @app.get("/get-stats")
-async def receive_hardware_data(request: Request):
-    return {'data': 'successfully reached backend'}
+async def get_stats(request: Request):
+    print("receive_stats - request received")
+    return {'data': 'reached backend'}
+
+@app.post("/receive-stats")
+async def receive_stats(request: Request):
+    data = await request.json()
+    print("receive_stats - request received", data)
+    return {'received': 'test'}
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
