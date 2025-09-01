@@ -56,7 +56,6 @@ def main():
             network_info = get_network_info()
             hardware_info = get_hardware_info()
 
-            # Combine into one
             system_info = {
                 "hardware": hardware_info,
                 "network": network_info

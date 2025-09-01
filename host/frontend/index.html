@@ -8,9 +8,19 @@
 </head>
 <body>
   <div class="container">
-    <h1>🌐 homestats</h1>
-    <div id="stats"></div>
+    <header>
+      <h1>🌐 HOMESTATS TERMINAL</h1>
+      <div class="status-bar">
+        <span id="agent-count">0 AGENTS</span>
+        <span id="last-update">LAST UPDATE: --:--:--</span>
+      </div>
+    </header>
+    
+    <div class="terminal-content">
+      <div id="stats-display"></div>
+    </div>
   </div>
+  <script src="util.js"></script>
   <script src="main.js"></script>
 </body>
 </html>

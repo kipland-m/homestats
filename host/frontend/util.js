@@ -3,12 +3,14 @@ function formatBytes(bytes) {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 function formatTimestamp(timestamp) {
   if (!timestamp || timestamp === 'N/A') return 'N/A';
   const date = new Date(timestamp);
+
   return date.toLocaleTimeString();
 }
 
@@ -49,54 +51,3 @@ function createAgentCard(agent) {
   `;
 }
 
-function updateDisplay(data) {
-  const statsDisplay = document.getElementById('stats-display');
-  const agentCount = document.getElementById('agent-count');
-  const lastUpdate = document.getElementById('last-update');
-  
-  const uniqueAgents = [...new Set(data.agents.map(a => a.ip_address))].length;
-  agentCount.textContent = `${uniqueAgents} ACTIVE AGENT${uniqueAgents !== 1 ? 'S' : ''}`;
-  lastUpdate.textContent = `LAST UPDATE: ${new Date().toLocaleTimeString()}`;
-  
-  if (data.agents.length === 0) {
-    statsDisplay.innerHTML = '<div class="error-message">NO AGENT DATA AVAILABLE</div>';
-    return;
-  }
-  
-  const agentsByIP = {};
-  data.agents.forEach(agent => {
-    if (!agentsByIP[agent.ip_address] || agent.id > agentsByIP[agent.ip_address].id) {
-      agentsByIP[agent.ip_address] = agent;
-    }
-  });
-  
-  const agentCards = Object.values(agentsByIP)
-    .sort((a, b) => b.id - a.id)
-    .map(createAgentCard)
-    .join('');
-    
-  statsDisplay.innerHTML = agentCards;
-}
-
-async function fetchStats() {
-  try {
-    const res = await fetch("http://localhost:8000/get-stats");
-    const data = await res.json();
-    
-    if (res.ok) {
-      updateDisplay(data);
-    } else {
-      throw new Error('Failed to fetch data');
-    }
-  } catch (err) {
-    console.error('Error fetching stats:', err);
-    document.getElementById('stats-display').innerHTML = 
-      '<div class="error-message">ERROR CONNECTING TO BACKEND</div>';
-  }
-}
-
-document.getElementById('stats-display').innerHTML = 
-  '<div class="loading">INITIALIZING HOMESTATS TERMINAL...</div>';
-
-fetchStats();
-setInterval(fetchStats, 5000);
