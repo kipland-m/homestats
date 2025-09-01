@@ -1,9 +1,25 @@
+"""
+██╗  ██╗ ██████╗ ███╗   ███╗███████╗███████╗████████╗ █████╗ ████████╗███████╗
+██║  ██║██╔═══██╗████╗ ████║██╔════╝██╔════╝╚══██╔══╝██╔══██╗╚══██╔══╝██╔════╝
+███████║██║   ██║██╔████╔██║█████╗  ███████╗   ██║   ███████║   ██║   ███████╗
+██╔══██║██║   ██║██║╚██╔╝██║██╔══╝  ╚════██║   ██║   ██╔══██║   ██║   ╚════██║
+██║  ██║╚██████╔╝██║ ╚═╝ ██║███████╗███████║   ██║   ██║  ██║   ██║   ███████║
+╚═╝  ╚═╝ ╚═════╝ ╚═╝     ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝  ╚═╝   ╚═╝   ╚══════╝
+
+                  ◯ Retro Monitoring Dashboard  ◯
+                  ▫ Real-time system metrics     ▫
+                  ▫ Multi-agent data collection  ▫
+                  ▫ Built with FastAPI & SQLite  ▫
+
 # Kipland Melton 2025
+# FastAPI backend for collecting and serving system stats from network agents
+# Features: SQLite storage, real-time updates, lightweight retro-themed frontend
+"""
+
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from fastapi.responses import PlainTextResponse
-from psutil import cpu_percent
+from host.models import AgentData
 import uvicorn
 from sqlalchemy import desc
 
@@ -24,7 +40,6 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-
 """
 async def handle_client(websocket, path):
     connected_clients.add(websocket)
@@ -43,6 +58,7 @@ async def handle_client(websocket, path):
     server = await websockets.serve(handle_client, 'localhost', 12345)
     await server.wait_closed()
 """
+
 
 @app.get("/get-stats")
 async def get_stats(request: Request):
@@ -71,33 +87,34 @@ async def get_stats(request: Request):
     
     return {'agents': agents_data, 'count': len(agents_data)}
 
-@app.post("/receive-stats")
-async def receive_stats(request: Request):
-    data = await request.json()
 
-    hardware = data["hardware"]
-    network = data["network"]
+@app.post("/receive-stats")
+async def receive_stats(request: AgentData):
+
+    hardware = request.hardware
+    network = request.network
 
     print("Hardware:", hardware)
     print("Network:", network)
 
     from datetime import datetime
     query = agent_stats.insert().values(
-         timestamp=datetime.now(),
-         cpu_cores=hardware["cpu_cores"],
-         cpu_threads=hardware["cpu_threads"],
-         memory_gb=hardware["memory_gb"],
-         disk_gb=hardware["disk_gb"],
-         cpu_percent=hardware["cpu_percent"],
-         ip_address=network["ip_address"],
-         mac_address=network["mac_address"],
-         bytes_sent=network["bytes_sent"],
-         bytes_recv=network["bytes_recv"]
-     )
+          timestamp=datetime.now(),
+          cpu_cores=hardware.cpu_cores,    
+          cpu_threads=hardware.cpu_threads,
+          memory_gb=hardware.memory_gb,
+          disk_gb=hardware.disk_gb,
+          cpu_percent=hardware.cpu_percent,
+          ip_address=network.ip_address,
+          mac_address=network.mac_address,
+          bytes_sent=network.bytes_sent,
+          bytes_recv=network.bytes_recv
+    )
 
     await database.execute(query)
 
     return {'received': 'data stored successfully'}
+
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
