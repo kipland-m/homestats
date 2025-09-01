@@ -61,7 +61,7 @@ async def handle_client(websocket, path):
 
 
 @app.get("/get-stats", response_model=StatsResponse)
-async def get_stats(request: Request):
+async def get_stats():
     query = agent_stats.select().order_by(desc(agent_stats.c.id)).limit(10)
 
     results = await database.fetch_all(query)
@@ -118,5 +118,4 @@ async def receive_stats(request: AgentData):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8000)
-
 
