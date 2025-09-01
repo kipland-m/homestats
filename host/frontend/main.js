@@ -3,15 +3,18 @@ function formatBytes(bytes) {
   const k = 1024;
   const sizes = ['B', 'KB', 'MB', 'GB', 'TB'];
   const i = Math.floor(Math.log(bytes) / Math.log(k));
+
   return parseFloat((bytes / Math.pow(k, i)).toFixed(2)) + ' ' + sizes[i];
 }
 
 function formatTimestamp(timestamp) {
   if (!timestamp || timestamp === 'N/A') return 'N/A';
   const date = new Date(timestamp);
+
   return date.toLocaleTimeString();
 }
 
+// nifty function that will handle the display of every agent 'card'
 function createAgentCard(agent) {
   return `
     <div class="agent-card">
