@@ -1,5 +1,7 @@
 # homestats - a dashboard to display local network information
-![[Screenshot 2025-08-31 at 8.34.32 PM.png]]
+
+## preview
+![screenshot](https://github.com/user-attachments/assets/396bbd0a-6781-46a9-8bee-77ed92f79e69)
 
 Running the project:
     host/frontend - python3 -m http.server 8001
