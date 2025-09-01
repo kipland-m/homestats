@@ -32,6 +32,10 @@ function createAgentCard(agent) {
           <span class="stat-value">${agent.cpu_threads}</span>
         </div>
         <div class="stat-item">
+          <span class="stat-label">CPU PERCENT:</span>
+          <span class="stat-value">${agent.cpu_percent}%</span>
+        </div>
+        <div class="stat-item">
           <span class="stat-label">MEMORY:</span>
           <span class="stat-value">${agent.memory_gb} GB</span>
         </div>
@@ -88,7 +92,6 @@ async function fetchStats() {
     
     if (res.ok) {
       updateDisplay(data);
-      console.log(data)
     } else {
       throw new Error('Failed to fetch data');
     }

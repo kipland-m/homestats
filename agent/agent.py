@@ -2,6 +2,7 @@
 
 import requests
 import psutil
+from psutil import Process
 import socket
 import time
 from datetime import datetime
@@ -18,6 +19,7 @@ host = os.getenv("host")
 
 def get_hardware_info():
     hardware_info = {
+        "cpu_percent": psutil.cpu_percent(interval=1),
         "cpu_cores": psutil.cpu_count(logical=False),
         "cpu_threads": psutil.cpu_count(logical=True),
         "memory_gb": round(psutil.virtual_memory().total / (1024**3), 2),
@@ -29,6 +31,15 @@ def get_hardware_info():
 def get_network_info():
     addrs = psutil.net_if_addrs()
     stats = psutil.net_io_counters()
+
+    try:
+         current_process = psutil.Process(os.getpid())
+         connections = current_process.net_connections(kind='inet')
+
+         print(connections)
+    except psutil.AccessDenied:
+         print("Need elevated permissions for network connections")
+         connections = []
 
     ip_address = None
     mac_address = None

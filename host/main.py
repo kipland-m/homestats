@@ -3,6 +3,7 @@ from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 from fastapi.responses import PlainTextResponse
+from psutil import cpu_percent
 import uvicorn
 from sqlalchemy import desc
 
@@ -61,6 +62,7 @@ async def get_stats(request: Request):
             'mac_address': row['mac_address'],
             'cpu_cores': row['cpu_cores'],
             'cpu_threads': row['cpu_threads'],
+            'cpu_percent': row['cpu_percent'],
             'memory_gb': row['memory_gb'],
             'disk_gb': row['disk_gb'],
             'bytes_sent': row['bytes_sent'],
@@ -86,6 +88,7 @@ async def receive_stats(request: Request):
          cpu_threads=hardware["cpu_threads"],
          memory_gb=hardware["memory_gb"],
          disk_gb=hardware["disk_gb"],
+         cpu_percent=hardware["cpu_percent"],
          ip_address=network["ip_address"],
          mac_address=network["mac_address"],
          bytes_sent=network["bytes_sent"],

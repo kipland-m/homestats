@@ -14,6 +14,7 @@ agent_stats = Table(
     Column("id", Integer, primary_key=True),
     Column("timestamp", DateTime, default=datetime.now()),
     Column("cpu_cores", Integer),
+    Column("cpu_percent", Integer),
     Column("cpu_threads", Integer),
     Column("memory_gb", Float),
     Column("disk_gb", Float),
