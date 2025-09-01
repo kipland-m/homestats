@@ -4,8 +4,11 @@
 ![screenshot](https://github.com/user-attachments/assets/396bbd0a-6781-46a9-8bee-77ed92f79e69)
 
 Running the project:
+
     host/frontend - python3 -m http.server 8001
+	
     host/ - python3 -m uvicorn host.main:app --reload
+	
     agent/ - python agent.py (for now, will become system tray level)
 
 Components of the product
