@@ -1,4 +1,5 @@
 from pydantic import BaseModel, Field, field_validator 
+from datetime import datetime
 
 # request models
 class HardwareInfo(BaseModel):
@@ -25,3 +26,20 @@ class NetworkInfo(BaseModel):
 class AgentData(BaseModel):
   hardware: HardwareInfo
   network: NetworkInfo
+
+class AgentResponse(BaseModel):
+   id: int
+   timestamp: datetime
+   ip_address: str
+   mac_address: str
+   cpu_cores: int
+   cpu_threads: int
+   cpu_percent: float
+   memory_gb: float
+   disk_gb: float
+   bytes_sent: int
+   bytes_recv: int
+
+class StatsResponse(BaseModel):
+   agents: list[AgentResponse] # python 3.9+
+   count: int
