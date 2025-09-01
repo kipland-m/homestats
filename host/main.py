@@ -79,7 +79,9 @@ async def receive_stats(request: Request):
     print("Hardware:", hardware)
     print("Network:", network)
 
+    from datetime import datetime
     query = agent_stats.insert().values(
+         timestamp=datetime.now(),
          cpu_cores=hardware["cpu_cores"],
          cpu_threads=hardware["cpu_threads"],
          memory_gb=hardware["memory_gb"],

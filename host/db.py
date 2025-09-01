@@ -12,7 +12,7 @@ agent_stats = Table(
     "agent_stats",
     metadata,
     Column("id", Integer, primary_key=True),
-    Column("timestamp", DateTime, default=datetime.utcnow),
+    Column("timestamp", DateTime, default=datetime.now()),
     Column("cpu_cores", Integer),
     Column("cpu_threads", Integer),
     Column("memory_gb", Float),

@@ -4,6 +4,7 @@ import requests
 import psutil
 import socket
 import time
+from datetime import datetime
 import os
 import time
 import dotenv 
@@ -61,14 +62,10 @@ def main():
                 "network": network_info
             }
 
-            print(system_info["hardware"])
-            print("\n\n\n")
-            print(system_info["network"])
+            print("sending system info |", datetime.now())
 
-            response = requests.post(f'http://{host}:8000/receive-stats', json=system_info)
-            print(response.text)
-                
-            time.sleep(10)
+            requests.post(f'http://{host}:8000/receive-stats', json=system_info)
+            time.sleep(5)
 
         except Exception as e:
             print("Error:", e)

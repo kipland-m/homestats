@@ -88,6 +88,7 @@ async function fetchStats() {
     
     if (res.ok) {
       updateDisplay(data);
+      console.log(data)
     } else {
       throw new Error('Failed to fetch data');
     }
