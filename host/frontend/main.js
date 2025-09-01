@@ -96,7 +96,7 @@ async function fetchStats() {
 }
 
 document.getElementById('stats-display').innerHTML = 
-  '<div class="loading">INITIALIZING HOMESTATS TERMINAL...</div>';
+  '<div class="loading">INITIALIZING HOMESTATS...</div>';
 
 fetchStats();
 setInterval(fetchStats, 5000);
