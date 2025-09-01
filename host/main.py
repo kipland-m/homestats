@@ -19,7 +19,7 @@
 from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
-from host.models import AgentData
+from host.models import AgentData, AgentResponse, StatsResponse
 import uvicorn
 from sqlalchemy import desc
 
@@ -60,7 +60,7 @@ async def handle_client(websocket, path):
 """
 
 
-@app.get("/get-stats")
+@app.get("/get-stats", response_model=StatsResponse)
 async def get_stats(request: Request):
     query = agent_stats.select().order_by(desc(agent_stats.c.id)).limit(10)
 
@@ -69,24 +69,24 @@ async def get_stats(request: Request):
     if not results:
         return {'agents': [], 'message': 'No data available'}
     
-    agents_data = []
-    for row in results:
-        agents_data.append({
-            'id': row['id'],
-            'timestamp': str(row['timestamp']) if row['timestamp'] else 'N/A',
-            'ip_address': row['ip_address'],
-            'mac_address': row['mac_address'],
-            'cpu_cores': row['cpu_cores'],
-            'cpu_threads': row['cpu_threads'],
-            'cpu_percent': row['cpu_percent'],
-            'memory_gb': row['memory_gb'],
-            'disk_gb': row['disk_gb'],
-            'bytes_sent': row['bytes_sent'],
-            'bytes_recv': row['bytes_recv']
-        })
+    agents_data = [
+        AgentResponse(
+            id=row["id"],
+            timestamp=row["timestamp"],
+            ip_address=row["ip_address"],
+            mac_address=row["mac_address"],
+            cpu_cores=row["cpu_cores"],
+            cpu_threads=row["cpu_threads"],
+            cpu_percent=row["cpu_percent"],
+            memory_gb=row["memory_gb"],
+            disk_gb=row["disk_gb"],
+            bytes_sent=row["bytes_sent"],
+            bytes_recv=row["bytes_recv"],
+        )
+        for row in results
+    ]
     
-    return {'agents': agents_data, 'count': len(agents_data)}
-
+    return StatsResponse(agents=agents_data, count=len(agents_data))
 
 @app.post("/receive-stats")
 async def receive_stats(request: AgentData):
