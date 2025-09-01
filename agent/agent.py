@@ -6,6 +6,7 @@ import socket
 import time
 from datetime import datetime
 import os
+import sys
 import time
 import dotenv 
 import netifaces
@@ -50,12 +51,19 @@ def get_network_info():
 
 
 def main():
-    print(f"host ip: {host}")
-
     while True:
         try:
             network_info = get_network_info()
             hardware_info = get_hardware_info()
+
+            if len(sys.argv) == 1:
+                print("Did you specify intervals (seconds)?")
+
+            if len(sys.argv) < 2:
+                print("Usage: \n\tpython3 agent.py <int seconds>")
+                return 0;
+            
+            interval_seconds = int(sys.argv[1])
 
             system_info = {
                 "hardware": hardware_info,
@@ -65,7 +73,7 @@ def main():
             print("sending system info |", datetime.now())
 
             requests.post(f'http://{host}:8000/receive-stats', json=system_info)
-            time.sleep(5)
+            time.sleep(interval_seconds)
 
         except Exception as e:
             print("Error:", e)

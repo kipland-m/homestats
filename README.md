@@ -33,4 +33,6 @@ displaying simple response from the backend. next step i want to go ahead and sp
 agent sends data to API -> API stores data -> API sends data to frontend via websocket
 
 using SQLite3, we are now storing stuff into the database as it comes in from the agent.
-Got a nice looking frontend implemented, carding different agents in
+Got a nice looking frontend implemented, carding different agents in the main display
+
+Next, I want to focus on getting more granular data, and getting a cool globe logo in the header.
