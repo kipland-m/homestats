@@ -88,6 +88,7 @@ async def get_stats():
     
     return StatsResponse(agents=agents_data, count=len(agents_data))
 
+
 @app.post("/receive-stats")
 async def receive_stats(request: AgentData):
 
