@@ -11,7 +11,7 @@ Running the project:
 	
     agent/ - python agent.py (for now, will become system tray level)
 	
-defaultly running at http://0.0.0.0:8001/
+defaultly running at http://localhost:8001/
 
 Components of the product
 - Backend
