@@ -42,4 +42,4 @@ class AgentResponse(BaseModel):
 
 class StatsResponse(BaseModel):
    agents: list[AgentResponse] # python 3.9+
-   count: int
+   count: int | None = None
