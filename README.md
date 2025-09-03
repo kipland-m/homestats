@@ -10,6 +10,8 @@ Running the project:
     host/ - python3 -m uvicorn host.main:app --reload
 	
     agent/ - python agent.py (for now, will become system tray level)
+	
+defaultly running at http://0.0.0.0:8001/
 
 Components of the product
 - Backend
