@@ -7,11 +7,11 @@
 
   # Split and run backend
   tmux split-window -h
-  tmux send-keys "python3 -m uvicorn host.main:app --reload" Enter
+  tmux send-keys "source .venv/bin/activate && python3 -m uvicorn host.main:app --reload" Enter
 
   # Split and run agent
   tmux split-window -v
-  tmux send-keys "cd agent && python3 agent.py" Enter
+  tmux send-keys "source .venv/bin/activate && cd agent && python3 agent.py 10" Enter
 
   # Attach to session
   tmux attach-session -t homestats
