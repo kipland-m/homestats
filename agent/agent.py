@@ -2,20 +2,35 @@
 
 import requests
 import psutil
-from psutil import Process
 import socket
 import time
 from datetime import datetime
 import os
 import sys
 import time
-import dotenv 
-import netifaces
+import dotenv
+import argparse
 
 dotenv.load_dotenv()
 
 connected_clients = set()
 host = os.getenv("host")
+
+def argparse_config():
+    parser = argparse.ArgumentParser(
+                        prog='homestats agent',
+                        description='deploy this onto some computer to connect to homestats server')
+
+    parser.add_argument('interval')
+
+    return parser
+
+def parse_sensor_temps():
+    try:
+        pass
+
+    except Exception as e:
+        pass
 
 def get_hardware_info():
     hardware_info = {
@@ -25,6 +40,9 @@ def get_hardware_info():
         "memory_gb": round(psutil.virtual_memory().total / (1024**3), 2),
         "disk_gb": round(psutil.disk_usage('/').total / (1024**3), 2)
     }
+
+    temp = parse_sensor_temps()
+    print(f"sensor temps: {temp}")
 
     return hardware_info
 
@@ -64,17 +82,13 @@ def get_network_info():
 def main():
     while True:
         try:
+            parser = argparse_config() 
+            args = parser.parse_args()
             network_info = get_network_info()
             hardware_info = get_hardware_info()
 
-            if len(sys.argv) == 1:
-                print("Did you specify intervals (seconds)?")
-
-            if len(sys.argv) < 2:
-                print("Usage: \n\tpython3 agent.py <int seconds>")
-                return 0;
-            
-            interval_seconds = int(sys.argv[1])
+         
+            interval_seconds = int(args.interval)
 
             system_info = {
                 "hardware": hardware_info,
@@ -83,7 +97,7 @@ def main():
 
             print("sending system info |", datetime.now())
 
-            requests.post(f'http://{host}:8000/receive-stats', json=system_info)
+            requests.post(f'http://{host}/receive-stats', json=system_info)
             time.sleep(interval_seconds)
 
         except Exception as e:
